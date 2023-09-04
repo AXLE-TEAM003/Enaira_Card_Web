@@ -1,4 +1,4 @@
-# samzuga-gpt-wallet
+# eNaira Card
 
 ## Project setup
 ```
