@@ -10,7 +10,9 @@
           <span class="tw-text-xs tw-font-light tw-text-white"
             >ID-08123456789</span
           >
-          <h5 class="tw-text-white tw-mb-0">N0.00</h5>
+          <h5 class="tw-text-white tw-mb-0">
+            {{ visibleAmount ? "N***" : "N0.00" }}
+          </h5>
         </div>
 
         <div>
@@ -28,7 +30,7 @@
       </div>
 
       <div
-        class="add-card tw-mb-4  tw-bg-white lg:tw-pl-12 md:tw-pl-12 tw-pl-6 tw-pr-6 tw-rounded-xl tw-shadow-sm tw-flex tw-items-center tw-justify-between tw-py-6"
+        class="add-card tw-mb-4 tw-bg-white lg:tw-pl-12 md:tw-pl-12 tw-pl-6 tw-pr-6 tw-rounded-xl tw-shadow-sm tw-flex tw-items-center tw-justify-between tw-py-6"
       >
         <div class="tw-flex tw-items-center tw-space-x-4">
           <span
@@ -38,7 +40,7 @@
           >
             <i-icon icon="icon-park-outline:add-one" />
           </span>
-          <span class="tw-font-semibold tw-text-[14px]">Link a Card</span>
+          <span class="tw-font-semibold tw-text-[14px]">Activate Card</span>
         </div>
         <div>
           <img
@@ -53,23 +55,39 @@
         <user-card />
       </div>
 
-      <div class="lg:tw-flex md:tw-flex tw-items-center lg:tw-space-x-4 md:tw-space-x-4">
-        <div class="tw-bg-[#CFE7FD] tw-w-full tw-rounded-xl tw-p-6 tw-flex lg:tw-mb-0 tw-mb-4 md:tw-mb-0 tw-items-center tw-space-x-2">
-          <span class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-bg-[#A7D4FD] tw-w-[35px]">
-            <i-icon icon="solar:card-linear" />
+      <div class="tw-mb-4">
+        <button class="outline-btn w-100 tw-py-3" @click="openKeyboard">
+          <span>Activate Card</span>
+        </button>
+      </div>
+
+      <div
+        class="lg:tw-flex md:tw-flex tw-items-center lg:tw-space-x-4 md:tw-space-x-4"
+      >
+        <div
+          @click="openKeyboard"
+          role="button"
+          class="tw-bg-[#FDCFCF] tw-justify-center tw-w-full tw-rounded-xl tw-p-6 tw-flex lg:tw-mb-0 tw-mb-4 md:tw-mb-0 tw-items-center tw-space-x-2"
+        >
+          <span
+            class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-bg-[#FD9898] tw-w-[35px]"
+          >
+            <i-icon icon="fluent:delete-12-regular" />
           </span>
-          <span class="tw-text-sm tw-font-semibold">
-            Replace Card
-          </span>
+          <span class="tw-text-sm tw-font-semibold"> Unlink Card </span>
         </div>
 
-        <div class=" tw-w-full tw-bg-[#FDCFCF] tw-rounded-xl tw-p-6 tw-flex tw-items-center tw-space-x-2">
-          <span class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-bg-[#FD9898] tw-w-[35px]">
-            <i-icon icon="solar:card-linear" />
+        <div
+          @click="openKeyboard"
+          role="button"
+          class="tw-w-full tw-justify-center tw-bg-[#FFF4BB] tw-rounded-xl tw-p-6 tw-flex tw-items-center tw-space-x-2"
+        >
+          <span
+            class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-bg-[#F5E48A] tw-w-[35px]"
+          >
+            <i-icon icon="ri:close-fill" />
           </span>
-          <span class="tw-text-sm tw-font-semibold">
-            Disable Card
-          </span>
+          <span class="tw-text-sm tw-font-semibold"> Disable Card </span>
         </div>
       </div>
     </div>
@@ -89,7 +107,7 @@
 <script>
 import EnterPin from "@/components/Modals/EnterPin.vue";
 import AddCard from "@/components/Modals/AddCard.vue";
-import UserCard from '@/components/UserCard.vue';
+import UserCard from "@/components/UserCard.vue";
 
 export default {
   components: { EnterPin, AddCard, UserCard },

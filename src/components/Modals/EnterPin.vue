@@ -11,7 +11,6 @@
         </div>
 
         <div class="code-input">
-          <!-- <input v-for="i in pin" :key="i" type="text" /> -->
           <span v-for="(item, index) in hidden" :key="index">
             <i-icon :icon="item" width="12px" />
           </span>
@@ -31,7 +30,7 @@
             <i-icon icon="fluent:backspace-24-regular" width="30px" />
           </span>
           <span @click="enterNum('0')">0</span>
-          <span class="ok" @click="done">Ok</span>
+          <span class="ok" role="button" @click="done">Ok</span>
         </div>
 
         <!-- <div class="mt-4">
@@ -84,7 +83,8 @@ export default {
     },
 
     done() {
-      this.$emit("done", this.pin.join(""));
+      // this.$emit("done", this.pin.join(""));
+      this.$emit("closeModal");
     },
 
     handleClose() {

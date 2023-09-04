@@ -1,28 +1,34 @@
 <template>
   <div class="user-card tw-rounded-xl tw-p-6 tw-flex tw-flex-col tw-space-y-6">
     <div class="tw-flex tw-justify-between tw-items-center">
-        <img src="@/assets/img/enaira-logo-white.png" class="tw-w-[120px]" alt="">
+      <img
+        src="@/assets/img/enaira-logo-white.png"
+        class="tw-w-[120px]"
+        alt=""
+      />
 
-        <span class="tw-flex tw-space-x-1 tw-items-center">
-            <span>
-                <i-icon icon="material-symbols:circle" width="10px" color="#4DFF3C"/>
-            </span>
-            <span class="tw-text-white tw-text-sm tw-font-medium">Active</span>
+      <span class="tw-flex tw-space-x-1 tw-items-center">
+        <span>
+          <i-icon icon="material-symbols:circle" width="10px" color="#4DFF3C" />
         </span>
+        <span class="tw-text-white tw-text-sm tw-font-medium">Active</span>
+      </span>
     </div>
 
     <div class="tw-flex tw-justify-end">
-        <img src="@/assets/img/eNaira-card-icon.png" alt="">
+      <img src="@/assets/img/eNaira-card-icon.png" alt="" />
     </div>
 
     <div class="tw-flex tw-items-center tw-justify-between">
-        <span class="card-number tw-text-white lg:tw-text-[30px] md:tw-text-[30px] tw-text-[20px]">
-            **** **** **** 1886
-        </span>
+      <span
+        class="card-number tw-text-white lg:tw-text-[30px] md:tw-text-[30px] tw-text-[20px]"
+      >
+        {{ cardNumber }}
+      </span>
       <span
         class="tw-bg-white tw-block tw-h-[30px] tw-w-[30px] tw-flex tw-items-center tw-justify-center tw-rounded-full"
         role="button"
-        @click="visibleAmount = !visibleAmount"
+        @click="displayCardNumber"
       >
         <i-icon
           :icon="visibleAmount ? 'tabler:eye' : 'gridicons:not-visible'"
@@ -38,7 +44,33 @@ export default {
   data() {
     return {
       visibleAmount: false,
+      cardNumber: "",
+      cardData: "2451654656261886"
     };
+  },
+  methods: {
+    displayCardNumber() {
+      this.visibleAmount = !this.visibleAmount;
+    },
+  },
+
+  watch: {
+    visibleAmount: {
+      handler(val) {
+        if (val) {
+          let cardInfo = this.cardData.match(/.{1,4}/g)
+          this.cardNumber = cardInfo.join(" ")
+        } else {
+          let carrdInfo = this.cardData.split("");
+          let spacing = carrdInfo.length - 4;
+          let hideInfo = carrdInfo.fill("*", "0", spacing);
+          let cardNumber = hideInfo.join("");
+          let carrd = cardNumber.match(/.{1,4}/g)
+          this.cardNumber = carrd.join(" ")
+        }
+      },
+      immediate: true
+    },
   },
 };
 </script>
@@ -53,6 +85,6 @@ export default {
 }
 
 .card-number {
-    font-family: var(--card-font);
+  font-family: var(--card-font);
 }
 </style>
