@@ -7,7 +7,7 @@
         <slot />
       </div>
       <div class="left-side-auth tw-flex tw-items-center tw-justify-center">
-        <h1 class="tw-text-white tw-font-bold tw-w-64 tw-text-center">
+        <h1 class="tw-text-white tw-font-bold tw-w-64 tw-text-center tw-text-[45px]">
           Welcome to eNaira Card Management System
         </h1>
       </div>
