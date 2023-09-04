@@ -14,7 +14,7 @@
         <div class="tw-justify-end tw-w-full tw-flex tw-space-x-4 tw-items-center">
           <div class="tw-full tw-flex tw-items-center tw-space-x-2">
             <img class="tw-h-[30px] tw-w-[30px] tw-rounded-full"  src="https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg" alt="" />
-            <span class="tw-flex tw-flex-col">
+            <span class="tw-flex tw-flex-col tw-w-full">
               <span class="tw-text-sm tw-font-bold">Hi, Sandra</span>
               <span class="tw-text-xs tw-flex">Good Afternoon <span></span></span>
             </span>

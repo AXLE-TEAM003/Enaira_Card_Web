@@ -3,9 +3,11 @@
     <div class="tw-flex tw-justify-between tw-items-center">
         <img src="@/assets/img/enaira-logo-white.png" class="tw-w-[120px]" alt="">
 
-        <span>
-            <span></span>
-            <span>Active</span>
+        <span class="tw-flex tw-space-x-1 tw-items-center">
+            <span>
+                <i-icon icon="material-symbols:circle" width="10px" color="#4DFF3C"/>
+            </span>
+            <span class="tw-text-white tw-text-sm tw-font-medium">Active</span>
         </span>
     </div>
 

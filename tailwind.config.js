@@ -14,8 +14,8 @@ module.exports = {
     },
     extend: {},
     colors: {
-      primary: process.env.PRIMARY_COLOR,
-      secondary: process.env.SECONDARY_COLOR,
+      primary: "#16790D",
+      secondary: "#E2E8F0",
       faded: '#A2E19B',
       iconGray: "#828282",
       light: "#828282",
