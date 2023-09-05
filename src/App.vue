@@ -33,7 +33,7 @@ export default {
         if (val) {
           var pathNum = Number(val);
           if (Number.isInteger(pathNum)) {
-            this.$router.push(`/?card=${pathNum}`);
+            this.$router.push(`/?card=${this.path}`);
           }
         }
       },
