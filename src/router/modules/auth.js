@@ -1,6 +1,5 @@
 const Login = () => import("@/views/Auth/loginPage.vue");
 const Register = () => import("@/views/Auth/registerPage.vue");
-
 const ForgotPassword = () => import("@/views/Auth/forgotPassword");
 
 // import Vuex store logics
@@ -8,7 +7,7 @@ const ForgotPassword = () => import("@/views/Auth/forgotPassword");
 
 const routes = [
   {
-    path: "/login",
+    path: "/",
     name: "login",
     component: Login,
     meta: {
@@ -16,15 +15,24 @@ const routes = [
     },
   },
 
-  {
-    path: "/",
-    name: "login",
-    redirect: '/login',
-    component: Login,
-    meta: {
-      layout: "AppAuthLayout",
-    },
-  },
+  // {
+  //   path: "/:id",
+  //   name: "home",
+  //   redirect: '/login/:id',
+  //   component: Login,
+  //   meta: {
+  //     layout: "AppAuthLayout",
+  //   },
+  // },
+
+  // {
+  //   path: "/:id",
+  //   name: "home",
+  //   component: Login,
+  //   meta: {
+  //     layout: "AppAuthLayout",
+  //   },
+  // },
 
   {
     path: "/register",

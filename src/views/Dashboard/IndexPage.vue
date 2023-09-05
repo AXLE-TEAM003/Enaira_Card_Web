@@ -30,12 +30,14 @@
       </div>
 
       <div
+        v-if="card === null"
+        role="button"
+        @click="linkCard"
         class="add-card tw-mb-4 tw-bg-white lg:tw-pl-12 md:tw-pl-12 tw-pl-6 tw-pr-6 tw-rounded-xl tw-shadow-sm tw-flex tw-items-center tw-justify-between tw-py-6"
       >
         <div class="tw-flex tw-items-center tw-space-x-4">
           <span
             role="button"
-            @click="linkCard"
             class="tw-bg-faded tw-block tw-h-[30px] tw-w-[30px] tw-flex tw-items-center tw-justify-center tw-rounded-full"
           >
             <i-icon icon="icon-park-outline:add-one" />
@@ -51,17 +53,18 @@
         </div>
       </div>
 
-      <div class="tw-mb-4">
-        <user-card />
+      <div class="tw-mb-4" v-if="card !== null">
+        <user-card :card_details="card" />
       </div>
 
-      <div class="tw-mb-4">
+      <div class="tw-mb-4" v-if="Object.keys(isCardScanned).length > 0">
         <button class="outline-btn w-100 tw-py-3" @click="openKeyboard">
           <span>Activate Card</span>
         </button>
       </div>
 
       <div
+        v-if="cardActions"
         class="lg:tw-flex md:tw-flex tw-items-center lg:tw-space-x-4 md:tw-space-x-4"
       >
         <div
@@ -93,14 +96,19 @@
     </div>
 
     <!-- Keyboad Modal  -->
-    <EnterPin v-if="enterPin" @closeModal="closeModal" />
+    <EnterPin v-if="enterPin" @closeModal="closeModal" @done="closeModal" />
 
     <!-- Add Card  -->
     <add-card
       v-if="addCard"
-      @link="openKeyboard"
+      @link="activateCard"
       @closeModal="closeCardModal"
     />
+
+    <!-- Success Modal -->
+    <!-- <success-modal/> -->
+
+    <!-- Error Modal -->
   </div>
 </template>
 
@@ -108,6 +116,7 @@
 import EnterPin from "@/components/Modals/EnterPin.vue";
 import AddCard from "@/components/Modals/AddCard.vue";
 import UserCard from "@/components/UserCard.vue";
+// import SuccessModal from '@/components/Modals/SuccessModal.vue';
 
 export default {
   components: { EnterPin, AddCard, UserCard },
@@ -116,6 +125,8 @@ export default {
       enterPin: false,
       addCard: false,
       visibleAmount: false,
+      card: null,
+      card_number: "",
     };
   },
 
@@ -128,14 +139,54 @@ export default {
       this.addCard = false;
     },
 
-    openKeyboard() {
+    activateCard(value) {
       this.closeCardModal();
+      this.card_number = value;
+      console.log(this.card_number);
+      this.openKeyboard();
+    },
+
+    openKeyboard() {
       this.enterPin = true;
     },
 
     closeModal() {
       this.enterPin = false;
+      this.card = {
+        card_number: this.card_number.toString(),
+        status: 'active',
+      };
     },
+  },
+
+  watch: {
+    "$route.query": {
+      handler(val) {
+        console.log(val);
+        if(Object.keys(val).length > 0 ){
+          this.card = {
+          card_number: val.card.toString(),
+          status: 'in-active',
+        };
+        }
+      },
+      immediate: true,
+    },
+  },
+
+  mounted(){
+    console.log(window, "ommmmo")
+  },
+
+  computed: {
+    isCardScanned() {
+      return this.$route.query;
+    },
+
+    cardActions(){
+      console.log(this.card !== null && this.card.status !== 'in-active')
+      return this.card !== null && this.card.status !== 'in-active'
+    }
   },
 };
 </script>

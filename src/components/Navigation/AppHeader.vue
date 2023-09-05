@@ -20,7 +20,7 @@
             </span>
           </div>
           <button
-            @click="$emit('link')"
+            @click="$router.push('/')"
             class="primary-btn tw-bg-[#D8F4D5] tw-text-primary lg:tw-px-8 md:tw-px-8 tw-px-3 tw-font-bold"
           >
             <span>Logout</span>

@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="modal-mask">
       <div class="tw-w-80 tw-bg-white tw-p-6 tw-rounded-xl">
-        <header class="tw-mb-4 tw-flex tw-justify-end tw-items-center">
+        <header class="tw-mb-4 tw-flex tw-justify-end tw-items-center" v-if="header">
           <slot name="header"></slot>
           <span
             class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[25px] tw-bg-gray6 tw-w-[25px]"
@@ -24,7 +24,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    header: {
+      type: Boolean,
+      default: true
+    }
+  }
+};
 </script>
 
 <style>

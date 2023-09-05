@@ -1,23 +1,42 @@
 <template>
   <modal-wrapper @close="handleClose">
     <template #body>
-      <div class="field">
-        <input
-          type="tel"
-          name="card-number"
-          id="text"
-          placeholder="Enter Card Number"
-        />
-        <label for="card-number">Enter Card Number</label>
-      </div>
+      <validation-observer v-slot="{ invalid, handleSubmit }">
+        <form @submit.prevent="handleSubmit(onSubmit)">
+          <validation-provider
+            class="tw-mt-4"
+            name="card number"
+            rules="required|min:16|max:16"
+            v-slot="{ dirty, valid, invalid, errors }"
+          >
+            <div class="field">  
+              <input
+                type="tel"
+                name="card-number"
+                id="text"
+                v-model.number="card_number"
+                placeholder="Enter Card Number"
+                v-bind:class="{
+                  'tw-text-success': dirty && valid,
+                  'tw-text-danger': dirty && invalid,
+                }"
+              />
+              <span class="invalid-feedback d-inline-block" v-show="errors">{{
+                errors[0]
+              }}</span>
+              <label for="card-number">Enter Card Number</label>
+            </div>
+          </validation-provider>
 
-      <div>
-        <div class="tw-mt-6">
-          <button @click="$emit('link')" class="primary-btn w-100">
-            <span>Activate</span>
-          </button>
-        </div>
-      </div>
+          <div>
+            <div class="tw-mt-10">
+              <button v-bind:disabled="invalid" class="primary-btn w-100">
+                <span>Activate</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </validation-observer>
     </template>
   </modal-wrapper>
 </template>
@@ -32,9 +51,7 @@ export default {
 
   data() {
     return {
-      pin: new Array(4),
-      hidden: new Array(4),
-      code: "",
+      card_number: "",
     };
   },
 
@@ -43,14 +60,16 @@ export default {
       this.$emit("done", this.pin.join(""));
     },
 
+    onSubmit() {
+      this.$emit("link", this.card_number);
+    },
+
     handleClose() {
       this.$emit("closeModal");
     },
   },
 
-  watch: {
-    
-  },
+  watch: {},
 };
 </script>
 
@@ -64,11 +83,10 @@ export default {
   width: 100%;
 }
 
-.password-iccon,
-.email-iccon {
+.invalid-feedback {
   position: absolute;
-  bottom: 6px;
-  right: 0;
+  bottom: -25px;
+  font-size: 10px;
 }
 /**
 * Add a transition to the label and input.

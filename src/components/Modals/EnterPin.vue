@@ -84,7 +84,7 @@ export default {
 
     done() {
       // this.$emit("done", this.pin.join(""));
-      this.$emit("closeModal");
+      this.$emit("done");
     },
 
     handleClose() {

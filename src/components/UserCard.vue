@@ -1,5 +1,5 @@
 <template>
-  <div class="user-card tw-rounded-xl tw-p-6 tw-flex tw-flex-col tw-space-y-6">
+  <div class="user-card tw-rounded-xl tw-p-6 tw-flex tw-flex-col tw-space-y-4">
     <div class="tw-flex tw-justify-between tw-items-center">
       <img
         src="@/assets/img/enaira-logo-white.png"
@@ -11,12 +11,12 @@
         <span>
           <i-icon icon="material-symbols:circle" width="10px" color="#4DFF3C" />
         </span>
-        <span class="tw-text-white tw-text-sm tw-font-medium">Active</span>
+        <span class="tw-text-white tw-text-sm tw-font-medium">{{ card_details.status }}</span>
       </span>
     </div>
 
     <div class="tw-flex tw-justify-end">
-      <img src="@/assets/img/eNaira-card-icon.png" alt="" />
+      <img src="@/assets/img/eNaira-card-icon.png" class="tw-w-[45px]" alt="" />
     </div>
 
     <div class="tw-flex tw-items-center tw-justify-between">
@@ -41,6 +41,11 @@
 
 <script>
 export default {
+  props:{
+    card_details: {
+      type: Object
+    }
+  },
   data() {
     return {
       visibleAmount: false,
@@ -58,10 +63,10 @@ export default {
     visibleAmount: {
       handler(val) {
         if (val) {
-          let cardInfo = this.cardData.match(/.{1,4}/g)
+          let cardInfo = this.card_details.card_number.match(/.{1,4}/g)
           this.cardNumber = cardInfo.join(" ")
         } else {
-          let carrdInfo = this.cardData.split("");
+          let carrdInfo = this.card_details.card_number.split("");
           let spacing = carrdInfo.length - 4;
           let hideInfo = carrdInfo.fill("*", "0", spacing);
           let cardNumber = hideInfo.join("");

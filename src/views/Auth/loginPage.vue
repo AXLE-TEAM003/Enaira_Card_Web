@@ -17,47 +17,75 @@
           >
         </span> -->
       </div>
-      <form @submit.prevent="login">
-        <span v-if="error" class="tw-mb-3 error-alert">{{ errors }}</span>
+      <validation-observer v-slot="{ invalid, handleSubmit }">
+        <form @submit.prevent="handleSubmit(onSubmit)">
+          <span v-if="error" class="tw-mb-3 error-alert">{{ errors }}</span>
 
-        <div class="field">
-          <input
-            type="email"
+          <validation-provider
             name="email"
-            id="email"
-            placeholder="xxxx@xx.xxx"
-          />
-          <span
-            class="email-iccon"
-            role="button"
-            @click="typePassword = !typePassword"
+            rules="required|email"
+            v-slot="{ dirty, valid, invalid, errors }"
           >
-            <i-icon icon="fluent:mail-24-regular" class="form-icon" />
-          </span>
-          <label for="email">Email Address</label>
-        </div>
+            <div class="field">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                v-model="credentials.email"
+                placeholder="xxxx@xx.xxx"
+                v-bind:class="{ 'tw-text-success': dirty && valid, 'tw-text-danger': dirty && invalid }"
+              />
+              <span
+                class="email-iccon"
+                role="button"
+                @click="typePassword = !typePassword"
+              >
+                <i-icon icon="fluent:mail-24-regular" class="form-icon" />
+              </span>
+              <span class="invalid-feedback d-inline-block" v-show="errors">{{
+              errors[0]
+            }}</span>
+              <label for="email">Email Address</label>
 
-        <div class="field">
-          <input
-            :type="typePassword ? 'password' : 'text'"
+            </div>
+            
+          </validation-provider>
+
+          <validation-provider
+            class="tw-mt-4"
             name="password"
-            id="password"
-            placeholder="Password"
-          />
-          <span
-            class="password-iccon"
-            role="button"
-            @click="typePassword = !typePassword"
+            rules="required"
+            v-slot="{ dirty, valid, invalid, errors }"
           >
-            <i-icon
-              :icon="typePassword ? 'tabler:eye' : 'gridicons:not-visible'"
-              class="form-icon"
-            />
-          </span>
-          <label for="password">Password</label>
-        </div>
+            <div class="field">
+              <input
+                :type="typePassword ? 'password' : 'text'"
+                name="password"
+                id="password"
+                v-model="credentials.password"
+                v-bind:class="{ 'tw-text-success': dirty && valid, 'tw-text-danger': dirty && invalid }"
+                placeholder="Password"
+                
+              />
+              <span
+                class="password-iccon"
+                role="button"
+                @click="typePassword = !typePassword"
+              >
+                <i-icon
+                  :icon="typePassword ? 'tabler:eye' : 'gridicons:not-visible'"
+                  class="form-icon"
+                />
+              </span>
+              <span class="invalid-feedback d-inline-block" v-show="errors">{{
+              errors[0]
+            }}</span>
+              <label for="password">Password</label>
+            </div>
+           
+          </validation-provider>
 
-        <!-- <div class="tw-mb-3 tw-text-right">
+          <!-- <div class="tw-mb-3 tw-text-right">
           <span class="tw-text-[12px]"
             ><router-link to="/forgot-password" class="tw-text-primary"
               >Forgot Password?</router-link
@@ -65,16 +93,13 @@
           </span>
         </div> -->
 
-        <div class="tw-mt-6">
-          <button
-            @click="$router.push('/dashboard')"
-            class="primary-btn w-100"
-          >
-            <span>Login</span>
-          </button>
-        </div>
+          <div class="tw-mt-10">
+            <button class="primary-btn w-100" v-bind:disabled="invalid">
+              <span>Login</span>
+            </button>
+          </div>
 
-        <!-- <div class="tw-mt-6">
+          <!-- <div class="tw-mt-6">
           <button
             @click="login"
             class="primary-btn w-100"
@@ -91,7 +116,8 @@
             <span v-else>Login</span>
           </button>
         </div> -->
-      </form>
+        </form>
+      </validation-observer>
     </div>
   </div>
 </template>
@@ -119,10 +145,15 @@ export default {
       };
       this.loginUser(credentials);
     },
+
+    onSubmit() {
+      this.$router.push("/dashboard");
+    },
   },
 
   mounted() {
     this.$store.commit("auth/REMOVE_ERROR_SUCCESS");
+    console.log(this.$route.params.id);
   },
 
   watch: {
@@ -162,6 +193,13 @@ export default {
   position: relative;
 
   width: 100%;
+}
+
+.invalid-feedback {
+  position: absolute;
+  bottom: -18px;
+  font-size: 12px;
+  /* right: 0; */
 }
 
 .password-iccon,
