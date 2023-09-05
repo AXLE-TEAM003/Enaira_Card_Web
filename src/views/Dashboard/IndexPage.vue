@@ -57,7 +57,7 @@
         <user-card :card_details="card" />
       </div>
 
-      <div class="tw-mb-4" v-if="Object.keys(isCardScanned).length > 0">
+      <div class="tw-mb-4" v-if="Object.keys(isCardScanned).length > 0 && this.card.status === 'in-active'">
         <button class="outline-btn w-100 tw-py-3" @click="openKeyboard">
           <span>Activate Card</span>
         </button>
@@ -106,7 +106,7 @@
     />
 
     <!-- Success Modal -->
-    <!-- <success-modal/> -->
+    <success-modal v-if="isSuccessful" />
 
     <!-- Error Modal -->
   </div>
@@ -116,10 +116,10 @@
 import EnterPin from "@/components/Modals/EnterPin.vue";
 import AddCard from "@/components/Modals/AddCard.vue";
 import UserCard from "@/components/UserCard.vue";
-// import SuccessModal from '@/components/Modals/SuccessModal.vue';
+import SuccessModal from "@/components/Modals/SuccessModal.vue";
 
 export default {
-  components: { EnterPin, AddCard, UserCard },
+  components: { EnterPin, AddCard, UserCard, SuccessModal },
   data() {
     return {
       enterPin: false,
@@ -127,6 +127,7 @@ export default {
       visibleAmount: false,
       card: null,
       card_number: "",
+      isSuccessful: false,
     };
   },
 
@@ -154,8 +155,13 @@ export default {
       this.enterPin = false;
       this.card = {
         card_number: this.card_number.toString(),
-        status: 'active',
+        status: "active",
       };
+      this.isSuccessful = true;
+    },
+
+    closeSuccessModal() {
+      this.isSuccessful = false
     },
   },
 
@@ -163,19 +169,31 @@ export default {
     "$route.query": {
       handler(val) {
         console.log(val);
-        if(Object.keys(val).length > 0 ){
+        if (Object.keys(val).length > 0) {
           this.card = {
-          card_number: val.card.toString(),
-          status: 'in-active',
-        };
+            card_number: val.card.toString(),
+            status: "in-active",
+          };
+        }
+      },
+      immediate: true,
+    },
+
+    isSuccessful: {
+      handler(val) {
+        console.log(val);
+        if (val) {
+          setTimeout(() => {
+            this.closeSuccessModal();
+          }, 1000);
         }
       },
       immediate: true,
     },
   },
 
-  mounted(){
-    console.log(window, "ommmmo")
+  mounted() {
+    console.log(window, "ommmmo");
   },
 
   computed: {
@@ -183,10 +201,10 @@ export default {
       return this.$route.query;
     },
 
-    cardActions(){
-      console.log(this.card !== null && this.card.status !== 'in-active')
-      return this.card !== null && this.card.status !== 'in-active'
-    }
+    cardActions() {
+      console.log(this.card !== null && this.card.status !== "in-active");
+      return this.card !== null && this.card.status !== "in-active";
+    },
   },
 };
 </script>

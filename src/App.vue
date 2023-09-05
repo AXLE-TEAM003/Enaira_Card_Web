@@ -14,6 +14,32 @@ export default {
   components: {
     AppLayout,
   },
+  data() {
+    return {
+      path: "",
+    };
+  },
+
+  methods: {},
+
+  mounted() {
+    var pathArray = window.location.pathname.split("/");
+    this.path = pathArray[1];
+  },
+
+  watch: {
+    path: {
+      handler(val) {
+        if (val) {
+          var pathNum = Number(val);
+          if (Number.isInteger(pathNum)) {
+            this.$router.push(`/?card=${pathNum}`);
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
 };
 </script>
 <style>

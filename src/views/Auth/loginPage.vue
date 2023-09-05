@@ -33,7 +33,10 @@
                 id="email"
                 v-model="credentials.email"
                 placeholder="xxxx@xx.xxx"
-                v-bind:class="{ 'tw-text-success': dirty && valid, 'tw-text-danger': dirty && invalid }"
+                v-bind:class="{
+                  'tw-text-success': dirty && valid,
+                  'tw-text-danger': dirty && invalid,
+                }"
               />
               <span
                 class="email-iccon"
@@ -43,12 +46,10 @@
                 <i-icon icon="fluent:mail-24-regular" class="form-icon" />
               </span>
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
-              errors[0]
-            }}</span>
+                errors[0]
+              }}</span>
               <label for="email">Email Address</label>
-
             </div>
-            
           </validation-provider>
 
           <validation-provider
@@ -63,9 +64,11 @@
                 name="password"
                 id="password"
                 v-model="credentials.password"
-                v-bind:class="{ 'tw-text-success': dirty && valid, 'tw-text-danger': dirty && invalid }"
+                v-bind:class="{
+                  'tw-text-success': dirty && valid,
+                  'tw-text-danger': dirty && invalid,
+                }"
                 placeholder="Password"
-                
               />
               <span
                 class="password-iccon"
@@ -78,11 +81,10 @@
                 />
               </span>
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
-              errors[0]
-            }}</span>
+                errors[0]
+              }}</span>
               <label for="password">Password</label>
             </div>
-           
           </validation-provider>
 
           <!-- <div class="tw-mb-3 tw-text-right">
@@ -134,6 +136,7 @@ export default {
       },
       typePassword: true,
       disabled: true,
+      cardNumber: {},
     };
   },
   methods: {
@@ -147,13 +150,19 @@ export default {
     },
 
     onSubmit() {
-      this.$router.push("/dashboard");
+      // Check if a card exists from the route and attaches to the route
+      if (Object.keys(this.cardNumber).length > 0) {
+        this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
+      } else {
+        this.$router.push("/dashboard");
+      }
     },
   },
 
   mounted() {
     this.$store.commit("auth/REMOVE_ERROR_SUCCESS");
-    console.log(this.$route.params.id);
+    var cardDetails = this.$route.query;
+    this.cardNumber = cardDetails;
   },
 
   watch: {
