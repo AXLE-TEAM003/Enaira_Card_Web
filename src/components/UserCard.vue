@@ -9,7 +9,7 @@
 
       <span class="tw-flex tw-space-x-1 tw-items-center">
         <span>
-          <i-icon icon="material-symbols:circle" width="10px" color="#4DFF3C" />
+          <i-icon icon="material-symbols:circle" width="10px" :color="card_details.status === 'active' ? '#4DFF3C' : '#FFA500' " />
         </span>
         <span class="tw-text-white tw-text-sm tw-font-medium">{{ card_details.status }}</span>
       </span>
@@ -21,7 +21,7 @@
 
     <div class="tw-flex tw-items-center tw-justify-between">
       <span
-        class="card-number tw-text-white lg:tw-text-[30px] md:tw-text-[30px] tw-text-[20px]"
+        class="card-number tw-text-white lg:tw-text-[37px] md:tw-text-[37px] tw-text-[25px]"
       >
         {{ cardNumber }}
       </span>
@@ -63,15 +63,16 @@ export default {
     visibleAmount: {
       handler(val) {
         if (val) {
-          let cardInfo = this.card_details.card_number.match(/.{1,4}/g)
-          this.cardNumber = cardInfo.join(" ")
+          // let cardInfo = this.card_details.card_number.match(/.{1,4}/g)
+          this.cardNumber = this.card_details.card_number
         } else {
           let carrdInfo = this.card_details.card_number.split("");
           let spacing = carrdInfo.length - 4;
           let hideInfo = carrdInfo.fill("*", "0", spacing);
           let cardNumber = hideInfo.join("");
-          let carrd = cardNumber.match(/.{1,4}/g)
-          this.cardNumber = carrd.join(" ")
+          this.cardNumber = cardNumber
+          // let carrd = cardNumber.match(/.{1,4}/g)
+          // this.cardNumber = carrd.join(" ")
         }
       },
       immediate: true

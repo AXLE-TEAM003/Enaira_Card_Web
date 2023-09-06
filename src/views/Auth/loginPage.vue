@@ -96,7 +96,7 @@
         </div> -->
 
           <div class="tw-mt-10">
-            <button class="primary-btn w-100" v-bind:disabled="invalid">
+            <button class="primary-btn w-100" v-bind:disabled="invalid" :class="{'tw-bg-gray4': invalid}">
               <span>Login</span>
             </button>
           </div>

@@ -57,8 +57,14 @@
         <user-card :card_details="card" />
       </div>
 
-      <div class="tw-mb-4" v-if="Object.keys(isCardScanned).length > 0 && this.card.status === 'in-active'">
-        <button class="outline-btn w-100 tw-py-3" @click="openKeyboard">
+      <div
+        class="tw-mb-4"
+        v-if="
+          Object.keys(isCardScanned).length > 0 &&
+          this.card.status === 'not linked'
+        "
+      >
+        <button class="outline-btn w-100 tw-py-3" @click="linkScannedCard">
           <span>Activate Card</span>
         </button>
       </div>
@@ -68,7 +74,7 @@
         class="lg:tw-flex md:tw-flex tw-items-center lg:tw-space-x-4 md:tw-space-x-4"
       >
         <div
-          @click="openKeyboard"
+          @click="unlinkCard"
           role="button"
           class="tw-bg-[#FDCFCF] tw-justify-center tw-w-full tw-rounded-xl tw-p-6 tw-flex lg:tw-mb-0 tw-mb-4 md:tw-mb-0 tw-items-center tw-space-x-2"
         >
@@ -81,7 +87,7 @@
         </div>
 
         <div
-          @click="openKeyboard"
+          @click="disableCard"
           role="button"
           class="tw-w-full tw-justify-center tw-bg-[#FFF4BB] tw-rounded-xl tw-p-6 tw-flex tw-items-center tw-space-x-2"
         >
@@ -96,7 +102,11 @@
     </div>
 
     <!-- Keyboad Modal  -->
-    <EnterPin v-if="enterPin" @closeModal="closeModal" @done="closeModal" />
+    <EnterPin v-if="enterPin" @closeModal="closePinModal" @done="closeModal">
+      <template slot="actionText">
+        <span> {{ actionText }} </span>
+      </template>
+    </EnterPin>
 
     <!-- Add Card  -->
     <add-card
@@ -106,7 +116,11 @@
     />
 
     <!-- Success Modal -->
-    <success-modal v-if="isSuccessful" />
+    <success-modal v-if="isSuccessful" >
+      <template slot="resultText">
+        <span> {{ resultText }} </span>
+      </template>
+    </success-modal>
 
     <!-- Error Modal -->
   </div>
@@ -128,6 +142,9 @@ export default {
       card: null,
       card_number: "",
       isSuccessful: false,
+      actionText: "",
+      resultText: "",
+      resultHeader: "",
     };
   },
 
@@ -143,8 +160,10 @@ export default {
     activateCard(value) {
       this.closeCardModal();
       this.card_number = value;
-      console.log(this.card_number);
       this.openKeyboard();
+      this.actionText = "Enter transaction pin to activate card";
+      this.resultHeader = "Successful";
+      this.resultText = "Your card was linked successfully";
     },
 
     openKeyboard() {
@@ -160,8 +179,34 @@ export default {
       this.isSuccessful = true;
     },
 
+    unlinkCard() {
+      this.actionText = "Enter transaction pin to unlink card";
+      this.resultHeader = "Card Block Successful";
+      this.resultText = "Your card was unlinked successfully ";
+      this.enterPin = true;
+    },
+
+    linkScannedCard(){
+      this.actionText = "Enter transaction pin to activate card";
+      this.resultHeader = "Successful";
+      this.resultText = "Your card was linked successfully ";
+      this.enterPin = true;
+      console.log(this.actionText);
+    },
+
+    disableCard() {
+      this.actionText = "Enter transaction pin to disable card";
+      this.resultHeader = "Card Block Successful";
+      this.resultText = "Your card was blocked successfully ";
+      this.enterPin = true;
+    },
+
+    closePinModal() {
+      this.enterPin = false;
+    },
+
     closeSuccessModal() {
-      this.isSuccessful = false
+      this.isSuccessful = false;
     },
   },
 
@@ -172,7 +217,7 @@ export default {
         if (Object.keys(val).length > 0) {
           this.card = {
             card_number: val.card.toString(),
-            status: "in-active",
+            status: "not linked",
           };
         }
       },
@@ -192,9 +237,7 @@ export default {
     },
   },
 
-  mounted() {
-    console.log(window, "ommmmo");
-  },
+  mounted() {},
 
   computed: {
     isCardScanned() {
@@ -202,8 +245,7 @@ export default {
     },
 
     cardActions() {
-      console.log(this.card !== null && this.card.status !== "in-active");
-      return this.card !== null && this.card.status !== "in-active";
+      return this.card !== null && this.card.status !== "not linked";
     },
   },
 };

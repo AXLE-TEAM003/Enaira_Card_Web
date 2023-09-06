@@ -6,7 +6,7 @@
           <validation-provider
             class="tw-mt-4"
             name="card number"
-            rules="required|min:16|max:16"
+            rules="required|min:13|max:13"
             v-slot="{ dirty, valid, invalid, errors }"
           >
             <div class="field">  
@@ -16,6 +16,7 @@
                 id="text"
                 v-model.number="card_number"
                 placeholder="Enter Card Number"
+                maxlength="13"
                 v-bind:class="{
                   'tw-text-success': dirty && valid,
                   'tw-text-danger': dirty && invalid,
@@ -30,7 +31,7 @@
 
           <div>
             <div class="tw-mt-10">
-              <button v-bind:disabled="invalid" class="primary-btn w-100">
+              <button v-bind:disabled="invalid" :class="{'tw-bg-gray4': invalid}" class="primary-btn w-100">
                 <span>Activate</span>
               </button>
             </div>

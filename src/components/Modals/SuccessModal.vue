@@ -13,7 +13,7 @@
           Successful
         </h5>
         <span class="tw-text-light tw-text-xs tw-text-center tw-block">
-          Your card was linked <br />successfully
+          <slot name="resultText"></slot>
         </span>
       </div>
     </template>

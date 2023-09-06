@@ -6,7 +6,9 @@
           <h6 class="">Enter Pin</h6>
           <span
             class="tw-block tw-text-gray4 tw-text-center tw-text-sm tw-font-medium"
-            >Enter transaction pin</span
+            >
+            <slot name="actionText"></slot>
+            </span
           >
         </div>
 
@@ -48,6 +50,12 @@ export default {
   components: {
     // PincodeInput,
     ModalWrapper,
+  },
+  props: {
+    actionText: {
+      type: String,
+      default: "Enter transaction pin",
+    },
   },
   data() {
     return {
