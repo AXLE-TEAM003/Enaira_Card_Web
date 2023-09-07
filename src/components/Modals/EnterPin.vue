@@ -91,8 +91,8 @@ export default {
     },
 
     done() {
-      // this.$emit("done", this.pin.join(""));
-      this.$emit("done");
+      this.$emit("done", this.pin.join(""));
+      // this.$emit("done");
     },
 
     handleClose() {

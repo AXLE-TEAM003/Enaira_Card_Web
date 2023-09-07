@@ -1,29 +1,28 @@
 /* eslint-disable no-undef */
 /* src/axios.js */
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
 import config from "./config";
 // import router from "./router";
 
 const $axios = axios.create({
   baseURL: config.apiUrl, // Set api base url from .env
-  // timeout: 30000, // default is `0` milliseconds (no timeout)
+  // timeout: 30000, // default is `0` millisecods (no timeout)
   headers: {
     // Accept: "application/json",
     //"Content-Type": "application/json",
     // "Access-Control-Allow-Origin": "*, http://localhost:8080",
-    // "Authorization": config.apiKey  ,
+    // "X-Authorization": config.apiKey,
     // Set api key from .env
   },
 });
 // Add access token to header if any
-// const accessToken = Cookies.get(config.accessTokenStorageKey);
-const accessToken = config.apiKey;
+const accessToken = Cookies.get(config.accessTokenStorageKey);
 if (accessToken) {
-  $axios.defaults.headers.common["authorization"] = "Bearer " + accessToken;
+  $axios.defaults.headers.common["Authorization"] = accessToken;
 } else {
-  $axios.defaults.headers.common["authorization"] = "Bearer " + config.apiKey;
-//   delete $axios.defaults.headers.common["authorization"];
+  $axios.defaults.headers.common["Authorization"] = null;
+  delete $axios.defaults.headers.common["Authorization"];
 }
 
 // Add a request interceptor
@@ -31,15 +30,12 @@ $axios.interceptors.request.use(
   function (axiosConfig) {
     NProgress.start();
     // Add access token to header before request is sent if any
-    // const accessToken = Cookies.get(config.accessTokenStorageKey);
-    const accessToken = config.apiKey;
-    console.log(accessToken, "mmmm");
-    console.log(config.apiKey, "kkkk");
+    const accessToken = Cookies.get(config.accessTokenStorageKey);
     if (accessToken) {
-      axiosConfig.headers.authorization = "Bearer " + accessToken;
+      axiosConfig.headers.Authorization = accessToken;
     } else {
-        $axios.defaults.headers.common["authorization"] = "Bearer " + config.apiKey;
-    //   delete axiosConfig.headers.Authorization;
+      axiosConfig.headers.Authorization = null;
+      delete axiosConfig.headers.Authorization;
     }
     return axiosConfig;
   },
@@ -58,7 +54,7 @@ $axios.interceptors.response.use(
   function (error) {
     NProgress.done();
     // Any status codes that falls outside the range of 2xx cause this function to trigger
-    if (error.response.data) {
+    if (error.response.data.status_code === 400) {
       //place your re-entry code
       // router.push("/login");
     }

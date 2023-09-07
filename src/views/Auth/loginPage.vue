@@ -10,28 +10,22 @@
         <h5 class="tw-font-semibold tw-text-[22px] tw-mt-5 tw-mb-12">
           Login to eNaira
         </h5>
-        <!-- <span class="tw-text-sm"
-          >Don't have an account?
-          <router-link to="/register" class="tw-text-primary"
-            >Sign Up</router-link
-          >
-        </span> -->
       </div>
       <validation-observer v-slot="{ invalid, handleSubmit }">
         <form @submit.prevent="handleSubmit(onSubmit)">
           <span v-if="error" class="tw-mb-3 error-alert">{{ errors }}</span>
 
           <validation-provider
-            name="email"
+            name="customer id"
             rules="required|email"
             v-slot="{ dirty, valid, invalid, errors }"
           >
             <div class="field">
               <input
                 type="email"
-                name="email"
+                name="Customer id"
                 id="email"
-                v-model="credentials.email"
+                v-model="credentials.customer_id"
                 placeholder="xxxx@xx.xxx"
                 v-bind:class="{
                   'tw-text-success': dirty && valid,
@@ -48,7 +42,7 @@
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
                 errors[0]
               }}</span>
-              <label for="email">Email Address</label>
+              <label for="email">Customer ID</label>
             </div>
           </validation-provider>
 
@@ -131,7 +125,7 @@ export default {
   data: () => {
     return {
       credentials: {
-        email: "",
+        customer_id: "",
         password: "",
       },
       typePassword: true,
@@ -151,11 +145,16 @@ export default {
 
     onSubmit() {
       // Check if a card exists from the route and attaches to the route
-      if (Object.keys(this.cardNumber).length > 0) {
-        this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
-      } else {
-        this.$router.push("/dashboard");
-      }
+      // if (Object.keys(this.cardNumber).length > 0) {
+      //   this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
+      // } else {
+      //   this.$router.push("/dashboard");
+      // }
+      let credentials = {
+        customer_id: this.credentials.customer_id,
+        password: this.credentials.password,
+      };
+      this.loginUser(credentials)
     },
   },
 

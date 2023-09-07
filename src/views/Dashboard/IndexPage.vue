@@ -7,11 +7,11 @@
         class="card-details tw-mb-4 tw-bg-primary lg:tw-p-6 md:tw-p-6 tw-p-6 tw-rounded-xl tw-flex tw-justify-between tw-items-center"
       >
         <div>
-          <span class="tw-text-xs tw-font-light tw-text-white"
-            >ID-08123456789</span
+          <span class="tw-text-xs tw-font-light tw-text-white tw-uppercase"
+            >balance</span
           >
-          <h5 class="tw-text-white tw-mb-0">
-            {{ visibleAmount ? "N***" : "N0.00" }}
+          <h5 class="tw-text-white tw-mb-0 tw-font-weight-semibold">
+            {{ "₦" + (visibleAmount ? "***" : user.balance) }}
           </h5>
         </div>
 
@@ -64,7 +64,7 @@
           this.card.status === 'not linked'
         "
       >
-        <button class="outline-btn w-100 tw-py-3" @click="linkScannedCard">
+        <button class="outline-btn w-100 tw-py-3" @click="uploadCard">
           <span>Activate Card</span>
         </button>
       </div>
@@ -87,22 +87,34 @@
         </div>
 
         <div
-          @click="disableCard"
+          @click="updateCardStatus"
           role="button"
-          class="tw-w-full tw-justify-center tw-bg-[#FFF4BB] tw-rounded-xl tw-p-6 tw-flex tw-items-center tw-space-x-2"
+          class="tw-w-full tw-justify-center tw-rounded-xl tw-p-6 tw-flex tw-items-center tw-space-x-2"
+          :class="card.enabled ? 'tw-bg-[#FFF4BB]' : 'tw-bg-[#D8F4D5]'"
         >
           <span
-            class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-bg-[#F5E48A] tw-w-[35px]"
+            class="tw-flex tw-justify-center tw-items-center tw-rounded-full tw-h-[35px] tw-w-[35px]"
+            :class="card.enabled ? 'tw-bg-[#F5E48A]' : 'tw-bg-[#A2E19B]'"
           >
-            <i-icon icon="ri:close-fill" />
+            <i-icon
+              :icon="
+                card.enabled ? 'ri:close-fill' : 'icon-park-outline:add-one'
+              "
+            />
           </span>
-          <span class="tw-text-sm tw-font-semibold"> Disable Card </span>
+          <span class="tw-text-sm tw-font-semibold">
+            {{ card.enabled ? "Disable Card" : "Enable Card" }}
+          </span>
         </div>
       </div>
     </div>
 
     <!-- Keyboad Modal  -->
-    <EnterPin v-if="enterPin" @closeModal="closePinModal" @done="closeModal">
+    <EnterPin
+      v-if="enterPin"
+      @closeModal="closePinModal"
+      @done="completeCardProcess"
+    >
       <template slot="actionText">
         <span> {{ actionText }} </span>
       </template>
@@ -116,13 +128,18 @@
     />
 
     <!-- Success Modal -->
-    <success-modal v-if="isSuccessful" >
+    <success-modal v-if="isSuccessful">
       <template slot="resultText">
         <span> {{ resultText }} </span>
       </template>
     </success-modal>
 
     <!-- Error Modal -->
+    <error-modal v-if="isError">
+      <template slot="resultText">
+        <span> {{ errorText }} </span>
+      </template>
+    </error-modal>
   </div>
 </template>
 
@@ -131,20 +148,25 @@ import EnterPin from "@/components/Modals/EnterPin.vue";
 import AddCard from "@/components/Modals/AddCard.vue";
 import UserCard from "@/components/UserCard.vue";
 import SuccessModal from "@/components/Modals/SuccessModal.vue";
+import ErrorModal from "@/components/Modals/ErrorModal.vue";
 
 export default {
-  components: { EnterPin, AddCard, UserCard, SuccessModal },
+  components: { EnterPin, AddCard, UserCard, SuccessModal, ErrorModal },
   data() {
     return {
       enterPin: false,
       addCard: false,
       visibleAmount: false,
-      card: null,
-      card_number: "",
+      card_number: undefined,
       isSuccessful: false,
+      isError: false,
       actionText: "",
       resultText: "",
+      errorText: "",
       resultHeader: "",
+      balance: "",
+      action: "",
+      linkedCard: {}
     };
   },
 
@@ -161,43 +183,65 @@ export default {
       this.closeCardModal();
       this.card_number = value;
       this.openKeyboard();
+      this.action = "activate";
       this.actionText = "Enter transaction pin to activate card";
-      this.resultHeader = "Successful";
-      this.resultText = "Your card was linked successfully";
+      this.resultHeader = "Card actiavted Successful";
+      this.resultText = "Your card was activated successfully ";
+      this.errorText = "Card activation unsuccessful.";
+    },
+
+    uploadCard() {
+      this.openKeyboard();
+      this.action = "activate";
+      this.actionText = "Enter transaction pin to activate card";
+      this.resultHeader = "Card actiavted Successful";
+      this.resultText = "Your card was activated successfully ";
+      this.errorText = "Card activation unsuccessful.";
     },
 
     openKeyboard() {
       this.enterPin = true;
     },
 
-    closeModal() {
-      this.enterPin = false;
-      this.card = {
-        card_number: this.card_number.toString(),
-        status: "active",
-      };
-      this.isSuccessful = true;
+    completeCardProcess(value) {
+      if (this.action === "activate") {
+        this.activateUserCard(value);
+      }
+      if (this.action === "deactivate") {
+        this.deactivateCard(value);
+      }
+      if (this.action === "disable") {
+        this.disableCard(value);
+      }
+      if (this.action === "enable") {
+        this.enableCard(value);
+      }
     },
 
     unlinkCard() {
+      this.action = "deactivate";
       this.actionText = "Enter transaction pin to unlink card";
-      this.resultHeader = "Card Block Successful";
+      this.resultHeader = "Card Unlink Successful";
       this.resultText = "Your card was unlinked successfully ";
+      this.errorText = "Card unlink unsuccessful.";
       this.enterPin = true;
     },
 
-    linkScannedCard(){
+    linkScannedCard() {
       this.actionText = "Enter transaction pin to activate card";
       this.resultHeader = "Successful";
       this.resultText = "Your card was linked successfully ";
       this.enterPin = true;
-      console.log(this.actionText);
     },
 
-    disableCard() {
-      this.actionText = "Enter transaction pin to disable card";
-      this.resultHeader = "Card Block Successful";
-      this.resultText = "Your card was blocked successfully ";
+    updateCardStatus() {
+      var action = this.card.enabled ? "disable" : "enable";
+      var result = this.card.enabled ? "Block" : "Unblock";
+      var text = this.card.enabled ? "blocked" : "Unblocked";
+      this.action = action;
+      this.actionText = `Enter transaction pin to ${action} card`;
+      this.resultHeader = `Card ${result} Successful`;
+      this.resultText = `Your card was ${text} successfully`;
       this.enterPin = true;
     },
 
@@ -208,17 +252,119 @@ export default {
     closeSuccessModal() {
       this.isSuccessful = false;
     },
+
+    closeErrorModal() {
+      this.isError = false;
+    },
+
+    // Method to Activate  Card
+    activateUserCard(e) {
+      var payload = {
+        card_number: this.card_number,
+        pin: e,
+      };
+      this.$request
+        .post("/card/activate", payload)
+        .then((res) => {
+          console.log(res);
+          this.enterPin = false;
+          this.isSuccessful = true;
+          this.$store.dispatch("auth/getUserProfile");
+          this.linkedCard = {}
+          this.removeQuery()
+        })
+        .catch((err) => {
+          console.log(err);
+          this.enterPin = false;
+          this.isError = true;
+        });
+    },
+
+    // Method to Unlink Card
+    deactivateCard(e) {
+      var payload = {
+        card_number: this.card.card_number,
+        pin: e,
+      };
+      this.$request
+        .post("/card/deactivate", payload)
+        .then((res) => {
+          console.log(res);
+          this.enterPin = false;
+          this.isSuccessful = true;
+          this.$store.dispatch("auth/getUserProfile");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.enterPin = false;
+          this.isError = true;
+        });
+    },
+
+    // Method to disable Card
+    disableCard(e) {
+      var payload = {
+        card_number: this.card.card_number,
+        pin: e,
+      };
+      this.$request
+        .post("/card/disable", payload)
+        .then((res) => {
+          console.log(res);
+          this.enterPin = false;
+          this.isSuccessful = true;
+          this.$store.dispatch("auth/getUserProfile");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.enterPin = false;
+          this.isError = true;
+        });
+    },
+
+    // Method to Block Card
+    enableCard(e) {
+      var payload = {
+        card_number: this.card.card_number,
+        pin: e,
+      };
+      this.$request
+        .post("/card/enable", payload)
+        .then((res) => {
+          console.log(res);
+          this.enterPin = false;
+          this.isSuccessful = true;
+          this.$store.dispatch("auth/getUserProfile");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.enterPin = false;
+          this.isError = true;
+        });
+    },
+
+    // Remove the query Parameters
+    removeQuery(){
+      this.$router.push({query: {}})
+    }
   },
 
   watch: {
     "$route.query": {
       handler(val) {
-        console.log(val);
+        console.log(val, "ommmo");
         if (Object.keys(val).length > 0) {
-          this.card = {
-            card_number: val.card.toString(),
-            status: "not linked",
-          };
+          if (this.card !== null) {
+            this.isError = true;
+            this.errorText = "You have a linked card";
+            this.removeQuery()
+          } else {
+            this.linkedCard = {
+              card_number: val.card,
+              status: "not linked",
+            };
+            this.card_number = this.linkedCard.card;
+          }
         }
       },
       immediate: true,
@@ -230,14 +376,31 @@ export default {
         if (val) {
           setTimeout(() => {
             this.closeSuccessModal();
-          }, 1000);
+          }, 1500);
+        }
+      },
+      immediate: true,
+    },
+
+    isError: {
+      handler(val) {
+        console.log(val);
+        if (val) {
+          setTimeout(() => {
+            this.closeErrorModal();
+          }, 1500);
         }
       },
       immediate: true,
     },
   },
 
-  mounted() {},
+  mounted() {
+    if(Object.keys(this.$route.query).length > 0) {
+      let data = this.$route.query
+      this.card_number = data.card
+    }
+  },
 
   computed: {
     isCardScanned() {
@@ -245,7 +408,15 @@ export default {
     },
 
     cardActions() {
-      return this.card !== null && this.card.status !== "not linked";
+      return this.card !== null && this.linkedCard.status !== 'not linked';
+    },
+
+    user() {
+      return this.$store.getters["auth/getUser"];
+    },
+
+    card() {
+      return this.user.card !== undefined ? this.user.card : Object.keys(this.linkedCard).length !== 0 ? this.linkedCard : null ;
     },
   },
 };

@@ -49,10 +49,6 @@ Vue.prototype.$request = $request;
 
 Vue.prototype.$axios = axios
 
-// import VueQrcode from 'vue-qrcode'
-import VueQr from 'vue-qr'
-Vue.component("v-qr",VueQr);
-
 import VueToast from 'vue-toast-notification';
 // Import one of the available themes
 // import 'vue-toast-notification/dist/theme-default.css';

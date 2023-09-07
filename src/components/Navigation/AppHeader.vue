@@ -11,12 +11,22 @@
             alt=""
           />
         </span>
-        <div class="tw-justify-end tw-w-full tw-flex tw-space-x-4 tw-items-center">
+        <div
+          class="tw-justify-end tw-w-full tw-flex tw-space-x-4 tw-items-center"
+        >
           <div class="tw-full tw-flex tw-items-center tw-space-x-2">
-            <img class="tw-h-[30px] tw-w-[30px] tw-rounded-full"  src="https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg" alt="" />
+            <img
+              class="tw-h-[30px] tw-w-[30px] tw-rounded-full"
+              src="https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg"
+              alt=""
+            />
             <span class="tw-flex tw-flex-col tw-w-full">
-              <span class="tw-text-sm tw-font-bold">Hi, Sandra</span>
-              <span class="tw-text-xs tw-flex">Good Afternoon <span></span></span>
+              <span class="tw-text-sm tw-font-bold"
+                >Hi, {{ user.customer_name }}</span
+              >
+              <span class="tw-text-xs tw-flex"
+                >{{ message }} <span></span
+              ></span>
             </span>
           </div>
           <button
@@ -35,7 +45,43 @@
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      currentTime: new Date()
+    };
+  },
+
+  methods: {
+    getProfile() {
+      this.$store.dispatch("auth/getUserProfile");
+    },
+    updateTime() {
+      this.currentTime = new Date();
+    },
+  },
+  beforeMount() {
+    this.getProfile();
+  },
+  created() {
+    setInterval(this.updateTime, 1000);
+  },
+  destroyed() {
+    clearInterval(this.updateTime);
+  },
+  computed: {
+    user() {
+      return this.$store.getters["auth/getUser"];
+    },
+    message() {
+      const currentHour = this.currentTime.getHours();
+
+      if (currentHour >= 0 && currentHour < 12) {
+        return "Good morning ";
+      } else if (currentHour >= 12 && currentHour < 18) {
+        return "Good afternoon ";
+      } else {
+        return "Good evening ";
+      }
+    },
   },
 };
 </script>

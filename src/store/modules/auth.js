@@ -112,13 +112,11 @@ export default {
   actions: {
     // Login request
     async loginUser({ commit }, payload) {
-      NProgress.start();
-      commit("SET_LOADING", true);
       try {
-        let res = await $request.post(`users/login`, payload);
+        let res = await $request.post(`card/login`, payload);
         let responsePayload = res.data;
         console.log(responsePayload);
-        Cookies.set("token", responsePayload.access_token);
+        Cookies.set("token", responsePayload.token);
         Vue.$toast.open({
           message: `${responsePayload.message}`,
           type: "success",
@@ -126,9 +124,9 @@ export default {
           // all of other options may go here
         });
         commit("LOGIN", {
-          accessToken: responsePayload.access_token,
+          accessToken: responsePayload.token,
         });
-        commit("SET_USER", responsePayload.data);
+        // commit("SET_USER", responsePayload.card);
         // Check redirect URL
         const url = window.location.search;
         const params = new URLSearchParams(url);
@@ -137,7 +135,7 @@ export default {
         router.push(d || "/dashboard");
         return res;
       } catch (error) {
-        console.log(error);
+        console.log(error, 'ommmo');
         Vue.$toast.open({
           message: `Error!`,
           type: "error",
@@ -148,9 +146,9 @@ export default {
           let errorPayload = error.data;
           if (errorPayload.message) {
             commit("SET_ERROR", errorPayload.message);
-            if (errorPayload.error) {
-              console.log(errorPayload.error);
-              commit("SET_VALIDATION_ERRORS", errorPayload.error);
+            if (errorPayload.message) {
+              console.log(errorPayload.message);
+              commit("SET_VALIDATION_ERRORS", errorPayload.message);
             }
             return;
           }
@@ -160,44 +158,17 @@ export default {
       }
     },
 
-    // Request request
-    async registerUser({ commit }, payload) {
-      commit("SET_LOADING", true);
-      try {
-        let res = await $request.post(`users/`, payload);
-        // Cookies.set("token", res.data.access_token);
-        commit("SET_SUCCESS", "User Registered");
-        let responsePayload = res.data;
-        Vue.$toast.open({
-          message: `${responsePayload.message}`,
-          type: "success",
-          position: "top",
-          // all of other options may go here
-        });
-        router.push("/");
-        return res;
-      } catch (error) {
-        console.log(error);
-        Vue.$toast.open({
-          message: `Error!`,
-          type: "error",
-          position: "top",
-          // all of other options may go here
-        });
-        if (error.data) {
-          let errorPayload = error.data;
-          if (errorPayload.message) {
-            commit("SET_ERROR", errorPayload.message);
-            if (errorPayload.error) {
-              console.log(errorPayload.error);
-              commit("SET_VALIDATION_ERRORS", errorPayload.error);
-            }
-            return;
-          }
-        }
-        commit("SET_ERROR", "Internal connection error, please try again.");
-        return error.data;
-      }
-    },
+    // Get User Profile 
+    async getUserProfile({commit}) {
+      $request.get('/card/profile')
+      .then((res)=> {
+        console.log(res);
+        let resPayload = res.data
+        commit('SET_USER', resPayload )
+      })
+      .catch((err)=> {
+        console.log(err);
+      })
+    }
   },
 };
