@@ -90,7 +90,11 @@
         </div> -->
 
           <div class="tw-mt-10">
-            <button class="primary-btn w-100" v-bind:disabled="invalid" :class="{'tw-bg-gray4': invalid}">
+            <button
+              class="primary-btn w-100"
+              v-bind:disabled="invalid"
+              :class="{ 'tw-bg-gray4': invalid }"
+            >
               <span>Login</span>
             </button>
           </div>
@@ -144,17 +148,20 @@ export default {
     },
 
     onSubmit() {
-      // Check if a card exists from the route and attaches to the route
-      // if (Object.keys(this.cardNumber).length > 0) {
-      //   this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
-      // } else {
-      //   this.$router.push("/dashboard");
-      // }
       let credentials = {
         customer_id: this.credentials.customer_id,
         password: this.credentials.password,
       };
-      this.loginUser(credentials)
+      this.loginUser(credentials).then(() => {
+        if (this.success) {
+          // Check if a card exists from the route and attaches to the route
+          if (Object.keys(this.cardNumber).length > 0) {
+            this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
+          } else {
+            this.$router.push("/dashboard");
+          }
+        }
+      });
     },
   },
 
@@ -184,6 +191,7 @@ export default {
       error: (state) => state.error,
       errors: (state) => state.validationErrors,
       user: (state) => state.user,
+      success: (state) => state.success
     }),
   },
 };

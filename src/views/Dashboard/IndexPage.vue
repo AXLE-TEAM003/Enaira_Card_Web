@@ -345,7 +345,7 @@ export default {
 
     // Remove the query Parameters
     removeQuery(){
-      this.$router.push({query: {}})
+      this.$router.replace({query: {}}).catch(()=>{})
     }
   },
 

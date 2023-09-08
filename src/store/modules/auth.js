@@ -4,7 +4,7 @@ import $request from "@/axios";
 import Cookies from "js-cookie";
 import config from "@/config.js";
 
-import router from "@/router";
+// import router from "@/router";
 
 // Vue.use(require("vue-moment"));
 
@@ -126,13 +126,13 @@ export default {
         commit("LOGIN", {
           accessToken: responsePayload.token,
         });
-        // commit("SET_USER", responsePayload.card);
+        commit("SET_SUCCESS", true);
         // Check redirect URL
-        const url = window.location.search;
-        const params = new URLSearchParams(url);
-        const d = params.get("redirectFrom");
+        // const url = window.location.search;
+        // const params = new URLSearchParams(url);
+        // const d = params.get("redirectFrom");
 
-        router.push(d || "/dashboard");
+        // router.push(d || "/dashboard");
         return res;
       } catch (error) {
         console.log(error, 'ommmo');

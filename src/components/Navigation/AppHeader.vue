@@ -22,7 +22,7 @@
             />
             <span class="tw-flex tw-flex-col tw-w-full">
               <span class="tw-text-sm tw-font-bold"
-                >Hi, {{ user.customer_name }}</span
+                >Hi, {{ name }}</span
               >
               <span class="tw-text-xs tw-flex"
                 >{{ message }} <span></span
@@ -82,6 +82,11 @@ export default {
         return "Good evening ";
       }
     },
+    name(){
+      let name = this.user.customer_name.split(' ')
+      let first_name = name[0]
+      return first_name
+    }
   },
 };
 </script>
