@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* src/axios.js */
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import axios from "axios";
 import config from "./config";
 // import router from "./router";
@@ -17,7 +17,8 @@ const $axios = axios.create({
   },
 });
 // Add access token to header if any
-const accessToken = Cookies.get(config.accessTokenStorageKey);
+// const accessToken = Cookies.get(config.accessTokenStorageKey);
+const accessToken = localStorage.getItem('token')
 if (accessToken) {
   $axios.defaults.headers.common["Authorization"] = accessToken;
 } else {
@@ -30,7 +31,8 @@ $axios.interceptors.request.use(
   function (axiosConfig) {
     NProgress.start();
     // Add access token to header before request is sent if any
-    const accessToken = Cookies.get(config.accessTokenStorageKey);
+    // const accessToken = Cookies.get(config.accessTokenStorageKey);
+    const accessToken = localStorage.getItem('token')
     if (accessToken) {
       axiosConfig.headers.Authorization = accessToken;
     } else {

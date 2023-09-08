@@ -50,7 +50,7 @@ export default {
 
   methods: {
     getProfile() {
-      // this.$store.dispatch("auth/getUserProfile");
+      this.$store.dispatch("auth/getUserProfile");
     },
     updateTime() {
       this.currentTime = new Date();

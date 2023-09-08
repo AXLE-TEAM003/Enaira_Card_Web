@@ -132,8 +132,10 @@ export default {
         commit("LOGIN", {
           accessToken: responsePayload.token,
         });
+        localStorage.setItem('token', responsePayload.token)
         commit("SET_SUCCESS", true);
         commit('SET_PROFILE', responsePayload)
+
         // Check redirect URL
         // const url = window.location.search;
         // const params = new URLSearchParams(url);
