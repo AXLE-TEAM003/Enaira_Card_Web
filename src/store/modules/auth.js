@@ -18,6 +18,7 @@ const getDefaultState = () => {
     validationErrors: {},
     user: {},
     loggedIn: false,
+    profile: {}
   };
 };
 
@@ -41,6 +42,7 @@ export default {
       return Cookies.get(config.accessTokenExpiresInStorageKey);
     },
     getUser: (state) => state.user,
+    getProfile: (state) => state.profile,
   },
 
   mutations: {
@@ -97,6 +99,10 @@ export default {
       state.user = payload;
     },
 
+    SET_PROFILE(state, payload) {
+      state.profile = payload;
+    },
+
     async LOGOUT(state) {
       state.user = null;
       state.token = null;
@@ -127,6 +133,7 @@ export default {
           accessToken: responsePayload.token,
         });
         commit("SET_SUCCESS", true);
+        commit('SET_PROFILE', responsePayload)
         // Check redirect URL
         // const url = window.location.search;
         // const params = new URLSearchParams(url);

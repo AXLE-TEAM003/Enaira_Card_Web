@@ -21,9 +21,7 @@
               alt=""
             />
             <span class="tw-flex tw-flex-col tw-w-full">
-              <span class="tw-text-sm tw-font-bold"
-                >Hi, {{ name }}</span
-              >
+              <span class="tw-text-sm tw-font-bold">Hi, {{ name }}</span>
               <span class="tw-text-xs tw-flex"
                 >{{ message }} <span></span
               ></span>
@@ -46,13 +44,13 @@ export default {
   components: {},
   data() {
     return {
-      currentTime: new Date()
+      currentTime: new Date(),
     };
   },
 
   methods: {
     getProfile() {
-      this.$store.dispatch("auth/getUserProfile");
+      // this.$store.dispatch("auth/getUserProfile");
     },
     updateTime() {
       this.currentTime = new Date();
@@ -69,7 +67,7 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters["auth/getUser"];
+      return this.$store.getters["auth/getProfile"];
     },
     message() {
       const currentHour = this.currentTime.getHours();
@@ -82,11 +80,13 @@ export default {
         return "Good evening ";
       }
     },
-    name(){
-      let name = this.user.customer_name.split(' ')
-      let first_name = name[0]
-      return first_name
-    }
+    name() {
+      if (this.user) {
+        var name = this.user.customer_name.split(" ");
+        var first_name = name[0];
+      }
+      return first_name;
+    },
   },
 };
 </script>

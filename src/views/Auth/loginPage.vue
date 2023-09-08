@@ -154,8 +154,11 @@ export default {
       };
       this.loginUser(credentials).then(() => {
         if (this.success) {
+          // Dispatch User Profile 
+          this.$store.dispatch("auth/getUserProfile");
           // Check if a card exists from the route and attaches to the route
           if (Object.keys(this.cardNumber).length > 0) {
+            
             this.$router.push(`/dashboard?card=${this.cardNumber.card}`);
           } else {
             this.$router.push("/dashboard");
