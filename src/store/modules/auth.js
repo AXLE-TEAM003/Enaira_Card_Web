@@ -4,7 +4,7 @@ import $request from "@/axios";
 import Cookies from "js-cookie";
 import config from "@/config.js";
 
-// import router from "@/router";
+import router from "@/router";
 
 // Vue.use(require("vue-moment"));
 
@@ -105,10 +105,9 @@ export default {
 
     async LOGOUT(state) {
       state.user = null;
-      state.token = null;
-      localStorage.removeItem("vuex");
       localStorage.clear();
     },
+
     RESET(state) {
       Object.keys(state).forEach((key) => {
         Object.assign(state[key], null);
@@ -178,6 +177,12 @@ export default {
       .catch((err)=> {
         console.log(err);
       })
+    },
+
+    logout({commit}) {
+      commit('LOGOUT')
+      router.go()
     }
+
   },
 };

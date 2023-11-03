@@ -7,11 +7,12 @@ const ForgotPassword = () => import("@/views/Auth/forgotPassword");
 
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "login",
     component: Login,
     meta: {
       layout: "AppAuthLayout",
+      requiresAuth: false
     },
   },
 
@@ -40,6 +41,7 @@ const routes = [
     component: Register,
     meta: {
       layout: "AppAuthLayout",
+      requiresAuth: false
     },
   },
 
@@ -49,6 +51,7 @@ const routes = [
     component: ForgotPassword,
     meta: {
       layout: "AppAuthLayout",
+      requiresAuth: false
     },
   },
 ];

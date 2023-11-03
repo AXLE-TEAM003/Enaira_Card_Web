@@ -6024,6 +6024,11 @@
     "picocolors" "^1.0.0"
     "stable" "^0.1.8"
 
+"sweetalert2@11.x":
+  "integrity" "sha512-PA3qinKZMNGAhA+AUu2wU7yQOpeZCgOaYWRcg26f4cZN6f7M9iPBuobsxOhR9EHs7ihUIxT6vhAMiB4kcmk1SA=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.9.0.tgz"
+  "version" "11.9.0"
+
 "table@^6.0.9":
   "integrity" "sha512-Y4X9zqrCftUhMeH2EptSSERdVKt/nEdijTOacGD/97EKjhQ/Qs8RTlEGABSJNNN8lac9kheH+af7yAkEWlgneA=="
   "resolved" "https://registry.npmmirror.com/table/-/table-6.8.1.tgz"
@@ -6269,6 +6274,11 @@
   "resolved" "https://registry.npmmirror.com/uuid/-/uuid-8.3.2.tgz"
   "version" "8.3.2"
 
+"v-idle@^0.2.1":
+  "integrity" "sha512-GzjE8u2XvxuN1GvY48VOkNyRKEzYGepYYjusXNWL+vTeHWCghAnv6NjACthLaKfGHBKI+YxKHaRnugKZ9JPu5Q=="
+  "resolved" "https://registry.npmjs.org/v-idle/-/v-idle-0.2.1.tgz"
+  "version" "0.2.1"
+
 "v8-compile-cache@^2.0.3":
   "integrity" "sha512-ocyWc3bAHBB/guyqJQVI5o4BZkPhznPYUG2ea80Gond/BgNWpap8TOmLSeeQG7bnh2KMISxskdADG59j7zruhw=="
   "resolved" "https://registry.npmmirror.com/v8-compile-cache/-/v8-compile-cache-2.4.0.tgz"
@@ -6365,6 +6375,13 @@
   dependencies:
     "hash-sum" "^1.0.2"
     "loader-utils" "^1.0.2"
+
+"vue-sweetalert2@^5.0.5":
+  "integrity" "sha512-Q7+TjQxNwGruT2jfPaSKMz18HHWs81r4umEwlrrtOf/QL5Iwl1T+tUaNkcvKB7Rf9rYftubt7NnOMjfDMnDH3A=="
+  "resolved" "https://registry.npmjs.org/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz"
+  "version" "5.0.5"
+  dependencies:
+    "sweetalert2" "11.x"
 
 "vue-template-compiler@^2.0.0", "vue-template-compiler@^2.6.14":
   "integrity" "sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ=="

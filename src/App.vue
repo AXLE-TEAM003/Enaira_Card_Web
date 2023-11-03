@@ -33,7 +33,7 @@ export default {
         if (val) {
           var pathNum = Number(val);
           if (Number.isInteger(pathNum)) {
-            this.$router.push(`/?card=${this.path}`);
+            this.$router.push(`/login?card=${this.path}`);
           }
         }
       },
@@ -42,6 +42,7 @@ export default {
   },
 };
 </script>
+
 <style>
 .fade-enter-active,
 .fade-leave-active {

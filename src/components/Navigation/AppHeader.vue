@@ -28,7 +28,7 @@
             </span>
           </div>
           <button
-            @click="$router.push('/')"
+            @click="logout"
             class="primary-btn tw-bg-[#D8F4D5] tw-text-primary lg:tw-px-8 md:tw-px-8 tw-px-3 tw-font-bold"
           >
             <span>Logout</span>
@@ -55,6 +55,9 @@ export default {
     updateTime() {
       this.currentTime = new Date();
     },
+    logout(){
+      this.$store.dispatch("auth/logout")
+    }
   },
   beforeMount() {
     this.getProfile();
@@ -71,7 +74,6 @@ export default {
     },
     message() {
       const currentHour = this.currentTime.getHours();
-
       if (currentHour >= 0 && currentHour < 12) {
         return "Good morning ";
       } else if (currentHour >= 12 && currentHour < 18) {
