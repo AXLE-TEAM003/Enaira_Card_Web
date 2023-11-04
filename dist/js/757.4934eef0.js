@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkenaira_card"]=self["webpackChunkenaira_card"]||[]).push([[757],{2757:function(n,u,a){a.r(u),a.d(u,{default:function(){return i}});var e=function(){var n=this,u=n._self._c;return u("div",[n._t("default")],2)},t=[],r={name:"DefaultLayout"},l=r,c=a(1001),f=(0,c.Z)(l,e,t,!1,null,null,null),i=f.exports}}]);
+//# sourceMappingURL=757.4934eef0.js.map

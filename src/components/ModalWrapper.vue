@@ -42,7 +42,7 @@ export default {
   top: 0;
   left: 0;
   height: 100vh;
-  z-index: 9999999;
+  z-index: 10;
   width: 100%;
   display: grid;
   display: -ms-grid;
