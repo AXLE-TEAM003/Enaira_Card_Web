@@ -16,17 +16,17 @@
           <span v-if="error" class="tw-mb-3 error-alert">{{ errors }}</span>
 
           <validation-provider
-            name="customer id"
-            rules="required|email"
+            name="Mobile Number/Email Address/Wallet ID"
+            rules="required"
             v-slot="{ dirty, valid, invalid, errors }"
           >
             <div class="field">
               <input
-                type="email"
-                name="Customer id"
+                type="text"
+                name="Mobile Number/Email Address/Wallet ID"
                 id="email"
                 v-model="credentials.customer_id"
-                placeholder="xxxx@xx.xxx"
+                placeholder="Enter Mobile Number/Email Address/Wallet ID"
                 v-bind:class="{
                   'tw-text-success': dirty && valid,
                   'tw-text-danger': dirty && invalid,
@@ -42,7 +42,7 @@
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
                 errors[0]
               }}</span>
-              <label for="email">Email, ID or Phone Number</label>
+              <label for="email">Mobile Number/Email Address/Wallet ID</label>
             </div>
           </validation-provider>
 
@@ -62,7 +62,7 @@
                   'tw-text-success': dirty && valid,
                   'tw-text-danger': dirty && invalid,
                 }"
-                placeholder="Password"
+                placeholder="Enter Password"
               />
               <span
                 class="password-iccon"
@@ -77,7 +77,7 @@
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
                 errors[0]
               }}</span>
-              <label for="password">Password</label>
+              <label for="password">Chosen Password</label>
             </div>
           </validation-provider>
 
