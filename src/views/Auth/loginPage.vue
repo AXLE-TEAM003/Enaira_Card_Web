@@ -42,7 +42,7 @@
               <span class="invalid-feedback d-inline-block" v-show="errors">{{
                 errors[0]
               }}</span>
-              <label for="email">Customer ID</label>
+              <label for="email">Email, ID or Phone Number</label>
             </div>
           </validation-provider>
 
