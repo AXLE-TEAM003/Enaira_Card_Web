@@ -74,7 +74,7 @@
                   class="form-icon"
                 />
               </span>
-              <span class="invalid-feedback d-inline-block" v-show="errors">{{
+              <span class="invalid-feedback password d-inline-block" v-show="errors">{{
                 errors[0]
               }}</span>
               <label for="password">Chosen Password</label>
@@ -208,17 +208,20 @@ export default {
 .field {
   display: flex;
   flex-flow: column-reverse;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   position: relative;
-
   width: 100%;
 }
 
 .invalid-feedback {
   position: absolute;
-  bottom: -18px;
+  bottom: -38px;
   font-size: 12px;
   /* right: 0; */
+}
+
+.invalid-feedback.password {
+  bottom: -20px;
 }
 
 .password-iccon,
@@ -251,6 +254,10 @@ input {
   padding: 4px 0;
 }
 
+input::placeholder {
+  font-size: 12px;
+}
+
 input:focus {
   outline: 0;
   border-bottom: 1px solid var(--primary-color);
@@ -260,7 +267,7 @@ input:focus {
 label {
   /* text-transform: uppercase; */
   /* letter-spacing: 0.05em; */
-  font-size: 14px;
+  font-size: 12.7px;
 }
 /**
 * Translate down and scale the label up to cover the placeholder,
